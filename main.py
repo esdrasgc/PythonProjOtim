@@ -14,7 +14,7 @@ r = calculate_matrix_of_percentual_change(df)
 sigma = calculate_matrix_of_volatility(r)
 
 ## sample teste
-indices_teste = [np.random.choice(r.shape[1], size=25, replace=False) for _ in range(1000)]
+indices_teste = [np.random.choice(r.shape[1], size=25, replace=False) for _ in range(10000)]
 calcular_n_sharpes_dos_indices = partial(calcular_n_sharpes_da_carteira, r=r, sigma=sigma)
 result = Pool().map(calcular_n_sharpes_dos_indices, indices_teste)
 

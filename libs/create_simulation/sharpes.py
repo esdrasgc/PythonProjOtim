@@ -43,7 +43,6 @@ def calcular_n_sharpes_da_carteira(indices_carteira, r, sigma, n=1000):
     # Default annualization - assumes daily returns and 252 trading days
     # Multiply returns by 252 and volatility by sqrt(252)
     annualization = 252 / np.sqrt(252)
-    
     calculate_sr_with_w = partial(sharpe_ratio, r=r_sub, sigma=sigma_sub, ctes=annualization)
     
     # Generate random portfolios
