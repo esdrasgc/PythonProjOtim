@@ -20,6 +20,7 @@ def test():
     ## sample teste
     indices_teste = [np.random.choice(r.shape[1], size=25, replace=False) for _ in range(10000)]
     calcular_n_sharpes_dos_indices = partial(calcular_n_sharpes_da_carteira, r=r, sigma=sigma)
+    print("Iniciando as simulações em paralelo do sharpe ratio otimizado...")
     result = Pool().map(calcular_n_sharpes_dos_indices, indices_teste)
 
     ## calcular sharpe final e retornar as informações da carteira e dos pesos usados
@@ -30,7 +31,7 @@ def test():
     print(f"Max Indices: {indices_teste[max_index]}")
     print(f"Max Weights: {result[max_index][1]}")
 
-
+@timer_func
 def main():
     # Carregar os dados
     df = download_dow_jones_data(start_date="2024-08-01", end_date="2024-12-31")
@@ -42,6 +43,8 @@ def main():
     ## sample teste
     indices_carteiras = list(combinations(range(r.shape[1]), 25))
     calcular_n_sharpes_dos_indices = partial(calcular_n_sharpes_da_carteira, r=r, sigma=sigma)
+
+    print("Iniciando as simulações em paralelo do sharpe ratio otimizado...")
     result = Pool().map(calcular_n_sharpes_dos_indices, indices_carteiras)
 
     ## calcular sharpe final e retornar as informações da carteira e dos pesos usados
@@ -51,6 +54,11 @@ def main():
     print(f"Max Index (carteiras): {max_index}")
     print(f"Max Indices: {indices_carteiras[max_index]}")
     print(f"Max Weights: {result[max_index][1]}")
+    with open("resultados_simulacao.txt", "w") as f:
+        f.write(f"Max Sharpe Ratio: {max_sharpe[0]}\n")
+        f.write(f"Max Index (carteiras): {max_index}\n")
+        f.write(f"Max Indices: {indices_carteiras[max_index]}\n")
+        f.write(f"Max Weights: {result[max_index][1]}\n")
 
 if __name__ == "__main__":
     main()
